@@ -9,8 +9,6 @@ from textblob import TextBlob
 with open(os.environ['config_file_path'], 'r') as file:
     config: dict = json.load(file)
 
-print(config)
-
 auth = tweepy.OAuthHandler(config['Twitter']['consumer_key'], config['Twitter']['consumer_secret'])
 auth.set_access_token(config['Twitter']['access_token'], config['Twitter']['access_token_secret'])
 t_api = tweepy.API(auth)
@@ -18,15 +16,14 @@ t_api = tweepy.API(auth)
 app = Flask(__name__)
 api = Api(app)
 
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Access-Control-Allow-Origin, Access-Control-Allow-Methods')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+    return response
+
 class User(Resource):
-
-    @app.after_request
-    def after_request(response):
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Access-Control-Allow-Origin, Access-Control-Allow-Methods')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
-        return response
-
     def get(self, name, number_of_tweets):
         polarity: str
         ptweets: list = []
