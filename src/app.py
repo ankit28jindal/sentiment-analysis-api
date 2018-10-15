@@ -43,10 +43,18 @@ class User(Resource):
 
             
         d.append({
-            'Positive': ptweets,
-            'Neutral': neutweets,
-            'Negative': negtweets
+            'name': 'Positive',
+            'data': ptweets
         })
+        d.append({
+            'name': 'Neutral',
+            'data': neutweets
+        })
+        d.append({
+            'name': 'Negative',
+            'data': negtweets,
+        })
+
         return {
             "Positive Tweets Percentage": (100*len(ptweets)/number_of_tweets),
             "Neutral Tweets Percentage": (100*len(neutweets)/number_of_tweets),
