@@ -23,6 +23,10 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
 
+class ApiKey(Resource):
+    def get(self):
+        return config['NewsAPI']['api_key']
+
 class User(Resource):
     def get(self, name, number_of_tweets):
         polarity: str
@@ -40,7 +44,6 @@ class User(Resource):
                 neutweets.append(r.text)
             else:
                 negtweets.append(r.text)
-
             
         d.append({
             'name': 'Positive',
@@ -64,4 +67,5 @@ class User(Resource):
 
 
 api.add_resource(User, '/user/<string:name>/<int:number_of_tweets>')
+api.add_resource(ApiKey, '/apikey')
 app.run()
