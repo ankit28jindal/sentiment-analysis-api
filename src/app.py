@@ -65,7 +65,6 @@ class User(Resource):
             "Tweets": d
         }
 
-
 api.add_resource(User, '/user/<string:name>/<int:number_of_tweets>')
 api.add_resource(ApiKey, '/apikey')
 app.run()
